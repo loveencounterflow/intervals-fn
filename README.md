@@ -1,3 +1,21 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+- [Intervals-fn](#intervals-fn)
+  - [What's in the box](#whats-in-the-box)
+    - [Unary operation](#unary-operation)
+    - [Binary operations](#binary-operations)
+    - [Manipulations](#manipulations)
+    - [Tests (Allen's interval relations)](#tests-allens-interval-relations)
+  - [Accepted input](#accepted-input)
+  - [Installation](#installation)
+  - [Advenced docs](#advenced-docs)
+  - [TypeScript support](#typescript-support)
+  - [Contributing](#contributing)
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # Intervals-fn
 
 > Enable manipulation on interval object.
