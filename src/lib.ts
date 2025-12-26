@@ -4,7 +4,6 @@ import {
   applySpec,
   concat,
   converge,
-  dissoc,
   drop,
   dropWhile,
   either,
@@ -21,23 +20,17 @@ import {
   unfold,
   unnest,
 } from 'ramda';
-import { IntervalAR, IntervalFT, IntervalSE, roat } from './data.structures';
 
-const dissocMany = (...props: string[]) => {
-  return pipe.apply(null, props.map(p => dissoc(p))); // Workaround for TS issue #4130
-};
+// =========================================================================================================
+export type roat<T> = ReadonlyArray<T>;
 
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
-// tslint:disable:prefer-object-spread
-export const convertFTtoSE = <T extends IntervalFT>(r: T): Omit<T, 'from' | 'to'> & IntervalSE =>
-  dissocMany('from', 'to')(Object.assign({}, r, { start: r.from, end: r.to }));
+export interface IntervalSE {
+  lo: number;
+  hi: number;
+}
 
-export const convertARtoSE = ([start, end]: IntervalAR): IntervalSE => ({ start, end });
+export type IntervalAR = [number, number];
 
-export const convertSEtoFT = <T extends IntervalSE>(r: T): Omit<T, 'start' | 'end'> & IntervalFT =>
-  dissocMany('start', 'end')(Object.assign({}, r, { from: r.start, to: r.end }));
-
-export const convertSEtoAR = (r: IntervalSE): IntervalAR => [r.start, r.end];
 
 /**
  * Complement of `intervals` bounded to `boundaries`. Convert space between two consecutive intervals into interval.
