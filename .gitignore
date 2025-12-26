@@ -3,5 +3,4 @@ lib
 coverage
 .nyc_output
 build
-docs
 es
