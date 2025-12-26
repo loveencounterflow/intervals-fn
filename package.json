@@ -1,32 +1,15 @@
 {
   "name": "intervals-fn",
-  "version": "0.0.0-development",
+  "version": "0.0.0",
   "description": "Manipulate intervals in a functional way",
-  "main": "lib/lib.js",
-  "module": "es/lib.js",
-  "types": "es/lib.d.ts",
+  "main": "src/lib.ts",
   "scripts": {
-    "ava": "ava build/**/*.test.js",
-    "test": "tslint -p ./ && tsc && nyc --reporter=lcov npm run ava",
-    "test:codecov": "tslint -p ./ && tsc && nyc npm run ava",
-    "build:ts": "tsc -p tsconfig.build.json",
-    "build": "npm run build:ts && npm run build:ts -- -m es6 --outDir es",
-    "prepublish": "npm run build",
-    "doc": "npm run build && typedoc --out docs/ lib/",
-    "semantic-release": "semantic-release",
-    "watch:ts": "tsc -w",
-    "watch:ava": "ava -w build/**/*.test.js",
-    "watch:test": "concurrently -k -p \"[{name}]\" -n \"TypeScript,Ava\" -c \"blue.bold,magenta.bold\" \"npm run watch:ts\" \"npm run watch:ava\""
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/js-republic/intervals-fn"
+    "url": "https://github.com/loveencounterflow/intervals-fn"
   },
   "private": false,
-  "publishConfig": {
-    "tag": "latest",
-    "access": "public"
-  },
   "keywords": [
     "interval",
     "range",
@@ -43,19 +26,7 @@
   "dependencies": {
     "ramda": "^0.32.0"
   },
-  "sideEffects": false,
   "devDependencies": {
     "@types/ramda": "^0.31.1"
-  },
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/cz-conventional-changelog"
-    }
-  },
-  "release": {
-    "publish": [
-      "@semantic-release/npm",
-      "@semantic-release/github"
-    ]
   }
 }
