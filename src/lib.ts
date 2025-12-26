@@ -25,8 +25,8 @@ import {
 export type roat<T> = ReadonlyArray<T>;
 
 export interface IntervalSE {
-  lo: number;
-  hi: number;
+  start: number;
+  end: number;
 }
 
 export type IntervalAR = [number, number];
@@ -40,8 +40,8 @@ export type IntervalAR = [number, number];
  *
  * boundaries | interval(s) | result
  * --- | --- | ---
- * { lo: 0, hi: 10} | [{ lo: 3, hi: 7 }] | [{ lo: 0, hi: 3 }, { lo: 7, hi: 10 }]
- * { lo: 0, hi: 10} | [{ lo: 2, hi: 4 }, { lo: 7, hi: 8 }] | [{ lo: 0, hi: 2 }, { lo: 4, hi: 7 }, { lo: 8, hi: 10 }]
+ * { start: 0, end: 10} | [{ start: 3, end: 7 }] | [{ start: 0, end: 3 }, { start: 7, end: 10 }]
+ * { start: 0, end: 10} | [{ start: 2, end: 4 }, { start: 7, end: 8 }] | [{ start: 0, end: 2 }, { start: 4, end: 7 }, { start: 8, end: 10 }]
  *
  * @param boundaries arg1: interval defining boundaries for the complement computation.
  * @param intervals arg2: array of intervals that complement the result.
@@ -51,17 +51,17 @@ export const complement = <T extends IntervalSE>(
   boundaries: T,
   intervals: roat<IntervalSE>
 ): T[] => {
-  const { lo, hi, ...rest }: IntervalSE = boundaries as any; // See TypeScript/pull/13288 TypeScript/issues/10727
+  const { start, end, ...rest }: IntervalSE = boundaries as any; // See TypeScript/pull/13288 TypeScript/issues/10727
   const prepRanges: IntervalSE[] = [
-    { lo: -Infinity, hi: lo },
+    { start: -Infinity, end: start },
     ...intervals,
-    { lo: hi, hi: Infinity },
+    { start: end, end: Infinity },
   ];
   return reject<IntervalSE | null>(
     isNil,
     // @ts-ignore
     aperture(2, prepRanges).map(
-      ([r1, r2]) => (r1.hi >= r2.lo ? null : { lo: r1.hi, hi: r2.lo, ...rest })
+      ([r1, r2]) => (r1.end >= r2.start ? null : { start: r1.end, end: r2.start, ...rest })
     )
   ) as unknown as T[];
 };
@@ -71,23 +71,23 @@ export const complement = <T extends IntervalSE>(
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 0, hi: 10} | { lo: 3, hi: 7 } | true
- * { lo: 0, hi: 5} | { lo: 5, hi: 7 } | false
+ * { start: 0, end: 10} | { start: 3, end: 7 } | true
+ * { start: 0, end: 5} | { start: 5, end: 7 } | false
  *
  * @param intervalA arg1: interval
  * @param intervalB arg2: interval
  * @returns true if overlaps
  */
 export const isOverlappingSimple = (a: IntervalSE, b: IntervalSE): boolean => {
-  return b.lo < a.hi && b.hi > a.lo;
+  return b.start < a.end && b.end > a.start;
 };
 
 const isOverlappingNum = (a: IntervalSE, b: number): boolean => {
-  return a.lo < b && b < a.hi;
+  return a.start < b && b < a.end;
 };
 
 const beforeOrAdjTo = (afterInt: IntervalSE) => (beforeInt: IntervalSE) =>
-  beforeInt.hi <= afterInt.lo;
+  beforeInt.end <= afterInt.start;
 
 /**
  * Test if `intervalA` overlaps with `intervalB`.
@@ -97,9 +97,9 @@ const beforeOrAdjTo = (afterInt: IntervalSE) => (beforeInt: IntervalSE) =>
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 0, hi: 10} | { lo: 3, hi: 7 } | true
- * { lo: 0, hi: 5} | { lo: 5, hi: 7 } | false
- * { lo: 5, hi: 10} | [{ lo: 0, hi: 4 }, { lo: 7, hi: 8 }] | true
+ * { start: 0, end: 10} | { start: 3, end: 7 } | true
+ * { start: 0, end: 5} | { start: 5, end: 7 } | false
+ * { start: 5, end: 10} | [{ start: 0, end: 4 }, { start: 7, end: 8 }] | true
  *
  * @param intervalA arg1: interval or array of intervals
  * @param intervalB arg2: interval or array of intervals
@@ -126,15 +126,15 @@ export const isOverlapping = (
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 0, hi: 10} | { lo: 3, hi: 7 } | false
- * { lo: 0, hi: 5} | { lo: 5, hi: 7 } | true
+ * { start: 0, end: 10} | { start: 3, end: 7 } | false
+ * { start: 0, end: 5} | { start: 5, end: 7 } | true
  *
  * @param intervalA arg1: interval
  * @param intervalB arg2: interval
  * @returns true if adjacent
  */
 export const isMeeting = (a: IntervalSE, b: IntervalSE): boolean => {
-  return a.lo === b.hi || a.hi === b.lo;
+  return a.start === b.end || a.end === b.start;
 };
 
 /**
@@ -142,15 +142,15 @@ export const isMeeting = (a: IntervalSE, b: IntervalSE): boolean => {
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 0, hi: 2} | { lo: 3, hi: 7 } | true
- * { lo: 0, hi: 5} | { lo: 3, hi: 7 } | false
+ * { start: 0, end: 2} | { start: 3, end: 7 } | true
+ * { start: 0, end: 5} | { start: 3, end: 7 } | false
  *
  * @param intervalA arg1: interval
  * @param intervalB arg2: interval
  * @returns true if before
  */
 export const isBefore = (a: IntervalSE, b: IntervalSE): boolean => {
-  return a.hi <= b.lo;
+  return a.end <= b.start;
 };
 
 /**
@@ -158,15 +158,15 @@ export const isBefore = (a: IntervalSE, b: IntervalSE): boolean => {
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 5, hi: 10} | { lo: 3, hi: 4 } | true
- * { lo: 5, hi: 10} | { lo: 3, hi: 6 } | false
+ * { start: 5, end: 10} | { start: 3, end: 4 } | true
+ * { start: 5, end: 10} | { start: 3, end: 6 } | false
  *
  * @param intervalA arg1: interval
  * @param intervalB arg2: interval
  * @returns true if after
  */
 export const isAfter = (a: IntervalSE, b: IntervalSE): boolean => {
-  return a.lo >= b.hi;
+  return a.start >= b.end;
 };
 
 /**
@@ -174,15 +174,15 @@ export const isAfter = (a: IntervalSE, b: IntervalSE): boolean => {
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 5, hi: 10} | { lo: 5, hi: 4 } | true
- * { lo: 5, hi: 10} | { lo: 0, hi: 10 } | false
+ * { start: 5, end: 10} | { start: 5, end: 4 } | true
+ * { start: 5, end: 10} | { start: 0, end: 10 } | false
  *
  * @param intervalA arg1: interval
  * @param intervalB arg2: interval
  * @returns true if same starting point
  */
 export const isStarting = (a: IntervalSE, b: IntervalSE): boolean => {
-  return a.lo === b.lo;
+  return a.start === b.start;
 };
 
 /**
@@ -190,15 +190,15 @@ export const isStarting = (a: IntervalSE, b: IntervalSE): boolean => {
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 5, hi: 10} | { lo: 0, hi: 10 } | true
- * { lo: 5, hi: 10} | { lo: 5, hi: 7 } | false
+ * { start: 5, end: 10} | { start: 0, end: 10 } | true
+ * { start: 5, end: 10} | { start: 5, end: 7 } | false
  *
  * @param intervalA arg1: interval
  * @param intervalB arg2: interval
  * @returns true if same ending point
  */
 export const isEnding = (a: IntervalSE, b: IntervalSE): boolean => {
-  return a.hi === b.hi;
+  return a.end === b.end;
 };
 
 /**
@@ -206,16 +206,16 @@ export const isEnding = (a: IntervalSE, b: IntervalSE): boolean => {
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 2, hi: 6} | { lo: 0, hi: 10 } | true
- * { lo: 5, hi: 10} | { lo: 0, hi: 10 } | true
- * { lo: 5, hi: 10} | { lo: 0, hi: 9 } | false
+ * { start: 2, end: 6} | { start: 0, end: 10 } | true
+ * { start: 5, end: 10} | { start: 0, end: 10 } | true
+ * { start: 5, end: 10} | { start: 0, end: 9 } | false
  *
  * @param intervalA arg1: interval
  * @param intervalB arg2: interval
  * @returns true if `intervalA` occurs in `intervalB`
  */
 export const isDuring = (a: IntervalSE, b: IntervalSE): boolean => {
-  return a.lo >= b.lo && a.hi <= b.hi;
+  return a.start >= b.start && a.end <= b.end;
 };
 
 /**
@@ -223,15 +223,15 @@ export const isDuring = (a: IntervalSE, b: IntervalSE): boolean => {
  *
  * intervalA | intervalB | result
  * --- | --- | ---
- * { lo: 5, hi: 10} | { lo: 5, hi: 10 } | true
- * { lo: 5, hi: 10} | { lo: 0, hi: 10 } | false
+ * { start: 5, end: 10} | { start: 5, end: 10 } | true
+ * { start: 5, end: 10} | { start: 0, end: 10 } | false
  *
  * @param intervalA arg1: interval
  * @param intervalB arg2: interval
  * @returns true if equivalent
  */
 export const isEqual = (a: IntervalSE, b: IntervalSE): boolean => {
-  return a.lo === b.lo && a.hi === b.hi;
+  return a.start === b.start && a.end === b.end;
 };
 
 const propFromNthArg = (n: number, propName: string) =>
@@ -239,13 +239,13 @@ const propFromNthArg = (n: number, propName: string) =>
     nthArg(n),
     prop(propName)
   );
-const maxEnd = (ranges: IntervalSE[]) => ranges.reduce((a, b) => (a.hi > b.hi ? a : b));
+const maxEnd = (ranges: IntervalSE[]) => ranges.reduce((a, b) => (a.end > b.end ? a : b));
 
 const simplifyPipe = pipe(
   groupWith(either(isOverlappingSimple, isMeeting)),
   map(
     converge(
-      applySpec<IntervalSE>({ lo: propFromNthArg(0, 'lo'), hi: propFromNthArg(1, 'hi') }),
+      applySpec<IntervalSE>({ start: propFromNthArg(0, 'start'), end: propFromNthArg(1, 'end') }),
       [head, maxEnd]
     )
   )
@@ -260,14 +260,14 @@ const simplifyPipe = pipe(
  *
  * | intervals A | result |
  * | ----------- | ------ |
- * | [{ lo: 3, hi: 9 }, { lo: 9, hi: 13 }, { lo: 11, hi: 14 }] | [{ lo: 3, hi: 14 }] |
+ * | [{ start: 3, end: 9 }, { start: 9, end: 13 }, { start: 11, end: 14 }] | [{ start: 3, end: 14 }] |
  *
  * @param intervalA
  */
 export const simplify = <T extends IntervalSE>(intervals: roat<T>) =>
   simplifyPipe([...intervals]) as T[];
 
-const sortByStart = sortBy<IntervalSE>(prop('lo'));
+const sortByStart = sortBy<IntervalSE>(prop('start'));
 
 const unifyPipe = pipe(
   concat as (a: IntervalSE[], b: IntervalSE[]) => IntervalSE[],
@@ -283,7 +283,7 @@ const unifyPipe = pipe(
  *
  * interval(s) A | interval(s) B | result
  * --- | --- | ---
- * [{ lo: 0, hi: 4}] | [{ lo: 3, hi: 7 }, { lo: 9, hi: 11 }] | [{ lo: 0, hi: 7 }, { lo: 9, hi: 11 }]
+ * [{ start: 0, end: 4}] | [{ start: 3, end: 7 }, { start: 9, end: 11 }] | [{ start: 0, end: 7 }, { start: 9, end: 11 }]
  *
  * @param intervalA arg1: array of intervals
  * @param intervalB arg2: array of intervals
@@ -296,8 +296,8 @@ const intersectUnfolderSeed = (
   i1: IntervalSE[],
   i2: IntervalSE[]
 ): [IntervalSE[], IntervalSE[]] => {
-  const new1 = i1[0].hi > i2[0].hi ? i1 : drop(1, i1);
-  const new2 = i2[0].hi > i1[0].hi ? i2 : drop(1, i2);
+  const new1 = i1[0].end > i2[0].end ? i1 : drop(1, i1);
+  const new2 = i2[0].end > i1[0].end ? i2 : drop(1, i2);
   return [new1, new2];
 };
 
@@ -319,8 +319,8 @@ const intersectUnfolder = ([inters1, inters2]: [roat<IntervalSE>, roat<IntervalS
   const inter2 = newInters2[0];
   const minMaxInter = {
     ...inter2,
-    hi: Math.min(inter1.hi, inter2.hi),
-    lo: Math.max(inter1.lo, inter2.lo),
+    end: Math.min(inter1.end, inter2.end),
+    start: Math.max(inter1.start, inter2.start),
   };
   const resultInter = beforeOrAdjTo(minMaxInter)(minMaxInter) ? null : minMaxInter;
   const seed = intersectUnfolderSeed(newInters1, newInters2);
@@ -336,9 +336,9 @@ const intersectUnfolder = ([inters1, inters2]: [roat<IntervalSE>, roat<IntervalS
  *
  * interval(s) A | interval(s) B | result
  * --- | --- | ---
- * { lo: 0, hi: 4 } | { lo: 3, hi: 7, foo: 'bar' } | [{ lo: 3, hi: 4, foo: 'bar' }]
- * { lo: 0, hi: 10 } | [{ lo: 2, hi: 5}, { lo: 5, hi: 8}] | [{ lo: 2, hi: 5 }, { lo: 5, hi: 8 }]
- * [{ lo: 0, hi: 4 }, { lo: 8, hi: 11 }] | [{ lo: 2, hi: 9 }, { lo: 10, hi: 13 }] | [{ lo: 2, hi: 4 }, { lo: 8, hi: 9 }, { lo: 10, hi: 11 }]
+ * { start: 0, end: 4 } | { start: 3, end: 7, foo: 'bar' } | [{ start: 3, end: 4, foo: 'bar' }]
+ * { start: 0, end: 10 } | [{ start: 2, end: 5}, { start: 5, end: 8}] | [{ start: 2, end: 5 }, { start: 5, end: 8 }]
+ * [{ start: 0, end: 4 }, { start: 8, end: 11 }] | [{ start: 2, end: 9 }, { start: 10, end: 13 }] | [{ start: 2, end: 4 }, { start: 8, end: 9 }, { start: 10, end: 11 }]
  *
  * @param intervalA arg1: array of intervals
  * @param intervalB arg2: array of intervals
@@ -354,7 +354,7 @@ export const intersect = <T extends IntervalSE>(
   ]).filter(i => i != null) as T[];
 };
 
-const minStart = (ranges: roat<IntervalSE>) => ranges.reduce((a, b) => (a.lo < b.lo ? a : b));
+const minStart = (ranges: roat<IntervalSE>) => ranges.reduce((a, b) => (a.start < b.start ? a : b));
 
 const mergeUnfolder = (mergeFn: (ints: any[]) => any) => (
   ints: roat<IntervalSE>
@@ -362,16 +362,16 @@ const mergeUnfolder = (mergeFn: (ints: any[]) => any) => (
   if (!ints.length) {
     return false;
   }
-  const lo = minStart(ints).lo;
+  const start = minStart(ints).start;
   const withoutStart = ints
-    .filter(a => a.hi > lo)
-    .map(a => (a.lo === lo ? { ...a, lo: a.hi } : a));
-  const hi = minStart(withoutStart).lo;
-  const toMerge = ints.filter(a => isDuring({ lo, hi }, a));
-  const next = { ...mergeFn(toMerge), lo, hi };
+    .filter(a => a.end > start)
+    .map(a => (a.start === start ? { ...a, start: a.end } : a));
+  const end = minStart(withoutStart).start;
+  const toMerge = ints.filter(a => isDuring({ start, end }, a));
+  const next = { ...mergeFn(toMerge), start, end };
   return [
     next,
-    ints.filter(a => a.hi > hi).map(a => (a.lo <= hi ? { ...a, lo: hi } : a)),
+    ints.filter(a => a.end > end).map(a => (a.start <= end ? { ...a, start: end } : a)),
   ];
 };
 
@@ -385,8 +385,8 @@ const mergeUnfolder = (mergeFn: (ints: any[]) => any) => (
  * parameter | value
  * --- | ---
  * mergeFn | `(a, b) => {...a, data: a.data + b.data }`
- * intervals | `[{ lo: 0, hi: 10, data: 5 }, { lo: 4, hi: 7, data: 100 }]`
- * result | `[{ lo: 0, hi: 4, data: 5 }, { lo: 4, hi: 7, data: 105 }, { lo: 7, hi: 10, data: 5 }]`
+ * intervals | `[{ start: 0, end: 10, data: 5 }, { start: 4, end: 7, data: 100 }]`
+ * result | `[{ start: 0, end: 4, data: 5 }, { start: 4, end: 7, data: 105 }, { start: 7, end: 10, data: 5 }]`
  * @param mergeFn arg1: function to merge extra properties of overlapping intervals
  * @param intervals arg2: intervals with extra properties.
  */
@@ -410,8 +410,8 @@ const subtractInter = (mask: IntervalSE[], base: IntervalSE): IntervalSE[] => {
  *
  * interval(s) base | interval(s) mask | result
  * --- | --- | ---
- * [{ lo: 0, hi: 4 }] | [{ lo: 3, hi: 7 }] | [{ lo: 0, hi: 3 }]
- * [{ lo: 0, hi: 4 }, { lo: 8, hi: 11 }] | [{ lo: 2, hi: 9 }, { lo: 10, hi: 13 }] | [{ lo: 0, hi: 2 }, { lo: 9, hi: 10 }]
+ * [{ start: 0, end: 4 }] | [{ start: 3, end: 7 }] | [{ start: 0, end: 3 }]
+ * [{ start: 0, end: 4 }, { start: 8, end: 11 }] | [{ start: 2, end: 9 }, { start: 10, end: 13 }] | [{ start: 0, end: 2 }, { start: 9, end: 10 }]
  *
  * @param intervalA arg1: array of intervals
  * @param intervalB arg2: array of intervals
@@ -428,7 +428,7 @@ const splitIntervalWithIndex = (int: IntervalSE, index: number): IntervalSE[] =>
   if (!isOverlappingNum(int, index)) {
     return [int];
   }
-  return [{ ...int, lo: int.lo, hi: index }, { ...int, lo: index, hi: int.hi }];
+  return [{ ...int, start: int.start, end: index }, { ...int, start: index, end: int.end }];
 };
 
 /**
@@ -438,8 +438,8 @@ const splitIntervalWithIndex = (int: IntervalSE, index: number): IntervalSE[] =>
  *
  * splitIndexes | interval(s) | result
  * --- | --- | ---
- * [2, 4] | { lo: 0, hi: 6, foo: 'bar' } | [{ lo: 0, hi: 2, foo: 'bar' }, { lo: 2, hi: 4, foo: 'bar' } { lo: 4, hi: 6, foo: 'bar' }]
- * [5] | [{ lo: 0, hi: 7 }, { lo: 3, hi: 8 }] | [{ lo: 0, hi: 5 }, { lo: 5, hi: 7 }, { lo: 3, hi: 5 }, { lo: 5, hi: 8 }]
+ * [2, 4] | { start: 0, end: 6, foo: 'bar' } | [{ start: 0, end: 2, foo: 'bar' }, { start: 2, end: 4, foo: 'bar' } { start: 4, end: 6, foo: 'bar' }]
+ * [5] | [{ start: 0, end: 7 }, { start: 3, end: 8 }] | [{ start: 0, end: 5 }, { start: 5, end: 7 }, { start: 3, end: 5 }, { start: 5, end: 8 }]
  *
  * @param splitIndexes arg1: defines indexes where intervals are splitted.
  * @param intervals arg2: intervals to be splitted.

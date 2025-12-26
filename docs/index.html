@@ -68,14 +68,14 @@
 							</thead>
 							<tbody>
 								<tr>
-									<lo>{ lo: 0, hi: 10}</td>
-									<td>[{ lo: 3, hi: 7 }]</td>
-									<td>[{ lo: 0, hi: 3 }, { lo: 7, hi: 10 }]</td>
+									<td>{ start: 0, end: 10}</td>
+									<td>[{ start: 3, end: 7 }]</td>
+									<td>[{ start: 0, end: 3 }, { start: 7, end: 10 }]</td>
 								</tr>
 								<tr>
-									<td>{ lo: 0, hi: 10}</td>
-									<td>[{ lo: 2, hi: 4 }, { lo: 7, hi: 8 }]</td>
-									<td>[{ lo: 0, hi: 2 }, { lo: 4, hi: 7 }, { lo: 8, hi: 10 }]</td>
+									<td>{ start: 0, end: 10}</td>
+									<td>[{ start: 2, end: 4 }, { start: 7, end: 8 }]</td>
+									<td>[{ start: 0, end: 2 }, { start: 4, end: 7 }, { start: 8, end: 10 }]</td>
 								</tr>
 							</tbody>
 						</table>
@@ -122,19 +122,19 @@
 							</thead>
 							<tbody>
 								<tr>
-									<lo>{ from: 0, to: 4 }</td>
-									<td>{ lo: 3, hi: 7, foo: &#39;bar&#39; }</td>
-									<td>[{ lo: 3, hi: 4, foo: &#39;bar&#39; }]</td>
+									<td>{ from: 0, to: 4 }</td>
+									<td>{ start: 3, end: 7, foo: &#39;bar&#39; }</td>
+									<td>[{ start: 3, end: 4, foo: &#39;bar&#39; }]</td>
 								</tr>
 								<tr>
-									<td>{ lo: 0, hi: 10 }</td>
-									<td>[{ lo: 2, hi: 5}, { lo: 5, hi: 8}]</td>
-									<td>[{ lo: 2, hi: 5 }, { lo: 5, hi: 8 }]</td>
+									<td>{ start: 0, end: 10 }</td>
+									<td>[{ start: 2, end: 5}, { start: 5, end: 8}]</td>
+									<td>[{ start: 2, end: 5 }, { start: 5, end: 8 }]</td>
 								</tr>
 								<tr>
-									<td>[{ lo: 0, hi: 4 }, { lo: 8, hi: 11 }]</td>
-									<td>[{ lo: 2, hi: 9 }, { lo: 10, hi: 13 }]</td>
-									<td>[{ lo: 2, hi: 4 }, { lo: 8, hi: 9 }, { lo: 10, hi: 11 }]</td>
+									<td>[{ start: 0, end: 4 }, { start: 8, end: 11 }]</td>
+									<td>[{ start: 2, end: 9 }, { start: 10, end: 13 }]</td>
+									<td>[{ start: 2, end: 4 }, { start: 8, end: 9 }, { start: 10, end: 11 }]</td>
 								</tr>
 							</tbody>
 						</table>
@@ -178,13 +178,13 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 3, hi: 4 }</td>
-									<td>true</lo>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 3, end: 4 }</td>
+									<td>true</td>
 								</tr>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 3, hi: 6 }</td>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 3, end: 6 }</td>
 									<td>false</td>
 								</tr>
 							</tbody>
@@ -233,13 +233,13 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 0, hi: 2}</td>
-									<td>{ lo: 3, hi: 7 }</td>
-									<td>true</lo>
+									<td>{ start: 0, end: 2}</td>
+									<td>{ start: 3, end: 7 }</td>
+									<td>true</td>
 								</tr>
 								<tr>
-									<td>{ lo: 0, hi: 5}</td>
-									<td>{ lo: 3, hi: 7 }</td>
+									<td>{ start: 0, end: 5}</td>
+									<td>{ start: 3, end: 7 }</td>
 									<td>false</td>
 								</tr>
 							</tbody>
@@ -288,18 +288,18 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 2, hi: 6}</td>
-									<td>{ lo: 0, hi: 10 }</td>
-									<td>true</lo>
-								</tr>
-								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 0, hi: 10 }</td>
+									<td>{ start: 2, end: 6}</td>
+									<td>{ start: 0, end: 10 }</td>
 									<td>true</td>
 								</tr>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 0, hi: 9 }</td>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 0, end: 10 }</td>
+									<td>true</td>
+								</tr>
+								<tr>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 0, end: 9 }</td>
 									<td>false</td>
 								</tr>
 							</tbody>
@@ -348,13 +348,13 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 0, hi: 10 }</td>
-									<td>true</lo>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 0, end: 10 }</td>
+									<td>true</td>
 								</tr>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 5, hi: 7 }</td>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 5, end: 7 }</td>
 									<td>false</td>
 								</tr>
 							</tbody>
@@ -403,13 +403,13 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 5, hi: 10 }</td>
-									<td>true</lo>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 5, end: 10 }</td>
+									<td>true</td>
 								</tr>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 0, hi: 10 }</td>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 0, end: 10 }</td>
 									<td>false</td>
 								</tr>
 							</tbody>
@@ -458,13 +458,13 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 0, hi: 10}</td>
-									<td>{ lo: 3, hi: 7 }</td>
-									<td>false</lo>
+									<td>{ start: 0, end: 10}</td>
+									<td>{ start: 3, end: 7 }</td>
+									<td>false</td>
 								</tr>
 								<tr>
-									<td>{ lo: 0, hi: 5}</td>
-									<td>{ lo: 5, hi: 7 }</td>
+									<td>{ start: 0, end: 5}</td>
+									<td>{ start: 5, end: 7 }</td>
 									<td>true</td>
 								</tr>
 							</tbody>
@@ -515,18 +515,18 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 0, hi: 10}</td>
-									<td>{ lo: 3, hi: 7 }</td>
+									<td>{ start: 0, end: 10}</td>
+									<td>{ start: 3, end: 7 }</td>
 									<td>true</td>
 								</tr>
 								<tr>
-									<td>{ lo: 0, hi: 5}</td>
-									<td>{ lo: 5, hi: 7 }</td>
+									<td>{ start: 0, end: 5}</td>
+									<td>{ start: 5, end: 7 }</td>
 									<td>false</td>
 								</tr>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>[{ lo: 0, hi: 4 }, { lo: 7, hi: 8 }]</td>
+									<td>{ start: 5, end: 10}</td>
+									<td>[{ start: 0, end: 4 }, { start: 7, end: 8 }]</td>
 									<td>true</td>
 								</tr>
 							</tbody>
@@ -575,13 +575,13 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 0, hi: 10}</td>
-									<td>{ lo: 3, hi: 7 }</td>
-									<td>true</lo>
+									<td>{ start: 0, end: 10}</td>
+									<td>{ start: 3, end: 7 }</td>
+									<td>true</td>
 								</tr>
 								<tr>
-									<td>{ lo: 0, hi: 5}</td>
-									<td>{ lo: 5, hi: 7 }</td>
+									<td>{ start: 0, end: 5}</td>
+									<td>{ start: 5, end: 7 }</td>
 									<td>false</td>
 								</tr>
 							</tbody>
@@ -630,13 +630,13 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 5, hi: 4 }</td>
-									<td>true</lo>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 5, end: 4 }</td>
+									<td>true</td>
 								</tr>
 								<tr>
-									<td>{ lo: 5, hi: 10}</td>
-									<td>{ lo: 0, hi: 10 }</td>
+									<td>{ start: 5, end: 10}</td>
+									<td>{ start: 0, end: 10 }</td>
 									<td>false</td>
 								</tr>
 							</tbody>
@@ -687,16 +687,16 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>mergeFn</lo>
+									<td>mergeFn</td>
 									<td><code>(a, b) =&gt; {...a, data: a.data + b.data }</code></td>
 								</tr>
 								<tr>
 									<td>intervals</td>
-									<td><code>[{ lo: 0, hi: 10, data: 5 }, { lo: 4, hi: 7, data: 100 }]</code></td>
+									<td><code>[{ start: 0, end: 10, data: 5 }, { start: 4, end: 7, data: 100 }]</code></td>
 								</tr>
 								<tr>
 									<td>result</td>
-									<td><code>[{ lo: 0, hi: 4, data: 5 }, { lo: 4, hi: 7, data: 105 }, { lo: 7, hi: 10, data: 5 }]</code></td>
+									<td><code>[{ start: 0, end: 4, data: 5 }, { start: 4, end: 7, data: 105 }, { start: 7, end: 10, data: 5 }]</code></td>
 								</tr>
 							</tbody>
 						</table>
@@ -738,8 +738,8 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>[{ lo: 3, hi: 9 }, { lo: 9, hi: 13 }, { lo: 11, hi: 14 }]</td>
-									<td>[{ lo: 3, hi: 14 }]</td>
+									<td>[{ start: 3, end: 9 }, { start: 9, end: 13 }, { start: 11, end: 14 }]</td>
+									<td>[{ start: 3, end: 14 }]</td>
 								</tr>
 							</tbody>
 						</table>
@@ -779,13 +779,13 @@
 							<tbody>
 								<tr>
 									<td>[2lo4]</td>
-									<td>{ lo: 0, hi: 6, foo: &#39;bar&#39; }</td>
-									<td>[{ lo: 0, hi: 2, foo: &#39;bar&#39; }, { lo: 2, hi: 4, foo: &#39;bar&#39; } { lo: 4, hi: 6, foo: &#39;bar&#39; }]</td>
+									<td>{ start: 0, end: 6, foo: &#39;bar&#39; }</td>
+									<td>[{ start: 0, end: 2, foo: &#39;bar&#39; }, { start: 2, end: 4, foo: &#39;bar&#39; } { start: 4, end: 6, foo: &#39;bar&#39; }]</td>
 								</tr>
 								<tr>
 									<td>[5]</td>
-									<td>[{ lo: 0, hi: 7 }, { lo: 3, hi: 8 }]</td>
-									<td>[{ lo: 0, hi: 5 }, { lo: 5, hi: 7 }, { lo: 3, hi: 5 }, { lo: 5, hi: 8 }]</td>
+									<td>[{ start: 0, end: 7 }, { start: 3, end: 8 }]</td>
+									<td>[{ start: 0, end: 5 }, { start: 5, end: 7 }, { start: 3, end: 5 }, { start: 5, end: 8 }]</td>
 								</tr>
 							</tbody>
 						</table>
@@ -832,14 +832,14 @@
 							</thead>
 							<tbody>
 								<tr>
-									<lo>[{ lo: 0, hi: 4 }]</td>
-									<td>[{ lo: 3, hi: 7 }]</td>
-									<td>[{ lo: 0, hi: 3 }]</td>
+									<td>[{ start: 0, end: 4 }]</td>
+									<td>[{ start: 3, end: 7 }]</td>
+									<td>[{ start: 0, end: 3 }]</td>
 								</tr>
 								<tr>
-									<td>[{ lo: 0, hi: 4 }, { lo: 8, hi: 11 }]</td>
-									<td>[{ lo: 2, hi: 9 }, { lo: 10, hi: 13 }]</td>
-									<td>[{ lo: 0, hi: 2 }, { lo: 9, hi: 10 }]</td>
+									<td>[{ start: 0, end: 4 }, { start: 8, end: 11 }]</td>
+									<td>[{ start: 2, end: 9 }, { start: 10, end: 13 }]</td>
+									<td>[{ start: 0, end: 2 }, { start: 9, end: 10 }]</td>
 								</tr>
 							</tbody>
 						</table>
@@ -885,9 +885,9 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td>[{ lo: 0, hi: 4}]</td>
-									<td>[{ lo: 3, hi: 7 }, { lo: 9, hi: 11 }]</td>
-									<td>[{ lo: 0, hi: 7 }, { lo: 9, hi: 11 }]</td>
+									<td>[{ start: 0, end: 4}]</td>
+									<td>[{ start: 3, end: 7 }, { start: 9, end: 11 }]</td>
+									<td>[{ start: 0, end: 7 }, { start: 9, end: 11 }]</td>
 								</tr>
 							</tbody>
 						</table>
